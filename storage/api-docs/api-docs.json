@@ -1,0 +1,467 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Vacation Plans API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User Login",
+                "description": "Authenticate user and generate access token",
+                "operationId": "222b2625838e3c57e017987f73598fda",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "silvio@meuemail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "Bearer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid email or password"
+                    }
+                }
+            }
+        },
+        "/api/vacations": {
+            "get": {
+                "tags": [
+                    "Vacation"
+                ],
+                "summary": "List all vacations",
+                "description": "Get a list of all vacations",
+                "operationId": "ff2b13139f46f35aa59639351b7731fa",
+                "responses": {
+                    "200": {
+                        "description": "List of vacations",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {}
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error while fetching vacations list"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/vacations/show/1": {
+            "get": {
+                "tags": [
+                    "Vacation"
+                ],
+                "summary": "Show vacation details",
+                "description": "Get details of a specific vacation by ID",
+                "operationId": "983fa81428022112f2a9b84cdf9c350f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Vacation ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Vacation details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "required": [
+                                        "id",
+                                        "title",
+                                        "description",
+                                        "date",
+                                        "location",
+                                        "participants"
+                                    ],
+                                    "properties": {
+                                        "id": {
+                                            "description": "The unique identifier of the vacation",
+                                            "type": "integer",
+                                            "format": "int64"
+                                        },
+                                        "title": {
+                                            "description": "Title of the vacation",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "Description of the vacation",
+                                            "type": "string"
+                                        },
+                                        "date": {
+                                            "description": "The date of the vacation",
+                                            "type": "string",
+                                            "format": "date"
+                                        },
+                                        "location": {
+                                            "description": "Location of the vacation",
+                                            "type": "string"
+                                        },
+                                        "participants": {
+                                            "description": "List of participants",
+                                            "type": "array",
+                                            "items": {
+                                                "description": "Participants of the vacation",
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Vacation not found"
+                    },
+                    "500": {
+                        "description": "Error while fetching vacation details"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/vacations/create": {
+            "post": {
+                "tags": [
+                    "Vacation"
+                ],
+                "summary": "Create a new vacation",
+                "description": "Create a new vacation record",
+                "operationId": "85284719f2f2304815d5cfeb9ff1aa0a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "description",
+                                    "date",
+                                    "location",
+                                    "participants"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "Title of the vacation",
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "description": "Description of the vacation",
+                                        "type": "string"
+                                    },
+                                    "date": {
+                                        "description": "The date of the vacation",
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "location": {
+                                        "description": "Location of the vacation",
+                                        "type": "string"
+                                    },
+                                    "participants": {
+                                        "description": "List of participants",
+                                        "type": "array",
+                                        "items": {
+                                            "description": "Participants of the vacation",
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Vacation created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "required": [
+                                        "id",
+                                        "title",
+                                        "description",
+                                        "date",
+                                        "location",
+                                        "participants"
+                                    ],
+                                    "properties": {
+                                        "id": {
+                                            "description": "The unique identifier of the vacation",
+                                            "type": "integer",
+                                            "format": "int64"
+                                        },
+                                        "title": {
+                                            "description": "Title of the vacation",
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "description": "Description of the vacation",
+                                            "type": "string"
+                                        },
+                                        "date": {
+                                            "description": "The date of the vacation",
+                                            "type": "string",
+                                            "format": "date"
+                                        },
+                                        "location": {
+                                            "description": "Location of the vacation",
+                                            "type": "string"
+                                        },
+                                        "participants": {
+                                            "description": "List of participants",
+                                            "type": "array",
+                                            "items": {
+                                                "description": "Participants of the vacation",
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error while creating vacation"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/vacations/update/2": {
+            "put": {
+                "tags": [
+                    "Vacation"
+                ],
+                "summary": "Update an existing vacation",
+                "description": "Update vacation details by ID",
+                "operationId": "5b33040a875c5e7bc9787b14c42dcead",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Vacation ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "description": "Title of the vacation",
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "description": "Description of the vacation",
+                                        "type": "string"
+                                    },
+                                    "date": {
+                                        "description": "The date of the vacation",
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "location": {
+                                        "description": "Location of the vacation",
+                                        "type": "string"
+                                    },
+                                    "participants": {
+                                        "description": "List of participants",
+                                        "type": "array",
+                                        "items": {
+                                            "description": "Participants of the vacation",
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Vacation updated successfully"
+                    },
+                    "404": {
+                        "description": "Vacation not found"
+                    },
+                    "500": {
+                        "description": "Error while updating vacation"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/vacations/delete/2": {
+            "delete": {
+                "tags": [
+                    "Vacation"
+                ],
+                "summary": "Delete a vacation",
+                "description": "Delete a vacation by ID",
+                "operationId": "6b5bae7080067876272332e68998591e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Vacation ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Vacation deleted successfully"
+                    },
+                    "404": {
+                        "description": "Vacation not found"
+                    },
+                    "500": {
+                        "description": "Error while deleting vacation"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/vacations/pdf/1": {
+            "get": {
+                "tags": [
+                    "Vacation"
+                ],
+                "summary": "Generate vacation PDF",
+                "description": "Generate a PDF file for a specific vacation by ID",
+                "operationId": "117d466e29caf5af5e4422ffc57ea571",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Vacation ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Vacation PDF generated",
+                        "content": {
+                            "application/pdf": {}
+                        }
+                    },
+                    "404": {
+                        "description": "Vacation not found"
+                    },
+                    "500": {
+                        "description": "Error while generating PDF"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "JWT Authorization header using the Bearer scheme. Example: 'Authorization: Bearer {token}'",
+                "name": "Authorization",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Auth"
+        },
+        {
+            "name": "Vacation",
+            "description": "Vacation"
+        }
+    ]
+}

@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\VacationController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/login', ['as' => 'login', 'uses' => 'AuthController@login']);
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+
+Route::middleware(['custom.authenticate'])->group(function () {
     Route::prefix('vacations')->name('vacation.')->group(function () {
         Route::get('/', [VacationController::class, 'index'])->name('list.vacations');
         Route::get('/show/{id}', [VacationController::class, 'show'])->name('show.vacation');
